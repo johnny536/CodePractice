@@ -3,10 +3,13 @@ class Solution:
         n = len(nums)
         indexed = list(enumerate(nums))
         indexed.sort(key=lambda x: x[1])
-        index = 0
-        for i in range(n-1):
-            if indexed[i][1] + indexed[i+1][1] == target:
-                index = i
-                break
 
-        return [indexed[i][0], indexed[i+1][0]]
+        l, r = 0, len(nums) - 1
+        while l < r:
+            s = indexed[l][1] + indexed[r][1]
+            if s == target:
+                return [indexed[l][0], indexed[r][0]]
+            if s < target:
+                l += 1
+            else:
+                r -= 1
