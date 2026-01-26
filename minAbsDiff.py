@@ -11,6 +11,6 @@ class Solution:
             elif s < min:
                 res.clear()
                 min = s
-                res.append([arr[i], arr[i+1]])
+                res.append([arr[i], arr[i+1]]) #太牛了 金子路 要继续加油阿
 
         return res
