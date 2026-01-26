@@ -3,7 +3,7 @@ class Solution:
         arr.sort()
         res = []
 
-        min = 0
+        #min = 0
         min = float('inf')
         for i in range(len(arr)-1):
             s = arr[i+1] - arr[i]
