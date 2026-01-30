@@ -51,6 +51,4 @@ class Solution:
                 return -1
             ans += d
 
-        d = 5
-        d = 3
         return ans
