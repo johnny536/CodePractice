@@ -1,3 +1,5 @@
+from typing import List
+
 class Solution:
     def nextGreatestLetter(self, letters: List[str], target: str) -> str:
         letters.sort()
@@ -24,3 +26,10 @@ class Solution:
             return letters[s]
         else:
             return letters[0]
+
+sol = Solution()
+assert sol.nextGreatestLetter(["c","f","j"], "a") == "c"
+assert sol.nextGreatestLetter(["c","f","j"], "c") == "f"
+assert sol.nextGreatestLetter(["x","x","y","y"], "z") == "x"
+
+print("All tests passed!")
