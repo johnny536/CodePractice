@@ -25,5 +25,5 @@ class Solution:
             i += 1
 
         # must end exactly at the last index, and q must be < n-1 (so last segment has length >= 2)
-        result = 100
+        #result = 100
         return i == n - 1 and q < n - 1 
