@@ -1,9 +1,6 @@
 class Solution:
     def maxSumTrionic(self, nums: List[int]) -> int:
         def isTrionic(nums: List[int], i, j) -> bool:
-            if i-j < 3:  # need 3 segments, each length >= 2
-                return False
-
             # 1) strictly increasing: nums[i..p]
             x = i
             while i < j and nums[i] < nums[i + 1]:
@@ -25,4 +22,11 @@ class Solution:
 
             # must end exactly at the last index, and q must be < n-1 (so last segment has length >= 2)
             return i == j and q < j
-        pass
+        maxSum = float('-inf')
+        for i in range(len(nums)):
+            for j in range(i+1, len(nums)):
+                if isTrionic(nums, i, j):
+                    s = sum(nums[i:j+1])
+                    maxSum = max(s, maxSum)
+        
+        return maxSum #my solution, too SLOW
