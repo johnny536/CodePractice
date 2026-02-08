@@ -18,7 +18,7 @@ class Solution:
         for i in range(n - 1, -1, -1):
             suffix_a[i] = suffix_a[i + 1] + (s[i] == 'a')
 
-        for i in range(idx_firstb, n+1):
+        for i in range(idx_firstb, n+1): #这里必须是n+1，因为要考虑删除所有b的情况
             cost = prefix_b[i] + suffix_a[i]
             if cost < minDel:
                 minDel = cost
