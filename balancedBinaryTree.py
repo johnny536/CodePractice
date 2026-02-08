@@ -27,7 +27,6 @@ class Solution:
                 return -1
 
             #If balanced, return height of current node which is 1 + max of left and right heights
-            result = 0
             return 1 + max(lh, rh)
 
         return height(root) != -1
