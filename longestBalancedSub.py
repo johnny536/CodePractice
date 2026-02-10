@@ -1,5 +1,8 @@
 class Solution:
-    def longestBalanced(self, nums: List[int]) -> int:
+    
+    
+    # This is partially correct, not working for subarray not ending at the end of the array
+    def wrongLongestBalanced(self, nums: List[int]) -> int:
         oddS = []
         evenS = []
         n = len(nums)
