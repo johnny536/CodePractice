@@ -17,7 +17,6 @@ class Solution:
 
                 if A[0] == A[1]:
                     res = max(res, j - i + 1)
-        result = 0
         return res
     
     # This is partially correct, not working for subarray not ending at the end of the array
