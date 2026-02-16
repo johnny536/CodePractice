@@ -16,5 +16,5 @@ class Solution:
 
             i -= 1
             j -= 1
-
+        # The result is built in reverse order, so we need to reverse it before returning (LSB -> MSB)
         return "".join(reversed(res))
