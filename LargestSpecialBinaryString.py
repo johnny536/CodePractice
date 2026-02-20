@@ -35,7 +35,22 @@ class Solution:
         - Sort the resulting top-level chunks in descending lexicographic order
           and concatenate. This yields the largest possible string.
         """
-        pass
+        # Split into top-level special substrings using balance counting.
+        parts: list[str] = []
+        balance = 0
+        start = 0
+
+        for i, ch in enumerate(s):
+            balance += 1 if ch == "1" else -1
+            if balance == 0:
+                # s[start:i+1] is a top-level special substring: "1" + inner + "0"
+                inner = s[start + 1 : i]
+                parts.append("1" + self.makeLargestSpecial(inner) + "0")
+                start = i + 1
+
+        # Sort parts descending to maximize lexicographic order, then join.
+        parts.sort(reverse=True)
+        return "".join(parts)
 
 
 def run_tests() -> None:
