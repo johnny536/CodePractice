@@ -40,7 +40,19 @@ Binary code "00" does not appear in s.
 
 class Solution:
     def hasAllCodes(self, s: str, k: int) -> bool:
-        pass
+        n = len(s)
+        if n <= k:
+            return False
+        total = 2 ** k
+
+        all_k_substrings = set()
+        for i in range(n-k+1):
+            all_k_substrings.add(s[i:i+k])
+
+        if len(all_k_substrings) == total:
+            return True
+        else:
+            return False
 
 
 def run_tests():
