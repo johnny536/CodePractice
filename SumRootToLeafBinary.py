@@ -69,7 +69,9 @@ class SolutionAccumulator:
 # -------------------------------------------------
 class SolutionReturnStyle:
     def sumRootToLeaf(self, root):
-
+        
+        # Return the sum of all root-to-leaf paths in the subtree rooted at 'node',
+        # where 'current_val' is the value formed by the path from the root to 'node'.
         def dfs(node, current_val):
             if not node:
                 return 0
