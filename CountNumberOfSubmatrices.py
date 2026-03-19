@@ -32,7 +32,46 @@ class Solution:
             Input:  grid = [[".","."],[".","."]]
             Output: 0
         """
-        pass
+        m, n = len(grid), len(grid[0])
+        
+        # prefix sum for converted values:
+        # X -> 1, Y -> -1, . -> 0
+        prefix = [[0] * (n + 1) for _ in range(m + 1)]
+        
+        # prefix count of X
+        x_prefix = [[0] * (n + 1) for _ in range(m + 1)]
+        
+        ans = 0
+        
+        for i in range(m):
+            for j in range(n):
+                val = 0
+                if grid[i][j] == 'X':
+                    val = 1
+                elif grid[i][j] == 'Y':
+                    val = -1
+                
+                is_x = 1 if grid[i][j] == 'X' else 0
+                
+                prefix[i + 1][j + 1] = (
+                    prefix[i][j + 1]
+                    + prefix[i + 1][j]
+                    - prefix[i][j]
+                    + val
+                )
+                
+                x_prefix[i + 1][j + 1] = (
+                    x_prefix[i][j + 1]
+                    + x_prefix[i + 1][j]
+                    - x_prefix[i][j]
+                    + is_x
+                )
+                
+                # submatrix must contain grid[0][0], so we only check prefix submatrices
+                if prefix[i + 1][j + 1] == 0 and x_prefix[i + 1][j + 1] > 0:
+                    ans += 1
+        
+        return ans
 
 
 def main():
