@@ -59,69 +59,114 @@ class Solution:
         """
         m, n = len(grid), len(grid[0])
 
-        total = sum(sum(row) for row in grid)
+        total = 0
+        row_sums = [0] * m
+        col_sums = [0] * n
 
-        half = total // 2
+        min_row = {}
+        max_row = {}
+        min_col = {}
+        max_col = {}
 
-        # horizontal cut
-        running = 0
-        if m > 1:
-            for i in range(m-1):
-                running += sum(grid[i])
-                if running == half and total % 2 == 0:
-                    return True
-                remaining = total - running
-                if i == 0:
-                    if (running - grid[i][0]) == remaining or (running - grid[i][n-1]) == remaining:
-                        return True
-                elif i == (m - 2):
-                    if (remaining - grid[i+1][0]) == running or (remaining - grid[i+1][n-1]) == running:
-                        return True
+        for i in range(m):
+            for j in range(n):
+                v = grid[i][j]
+                total += v
+                row_sums[i] += v
+                col_sums[j] += v
+
+                if v not in min_row:
+                    min_row[v] = i
+                    max_row[v] = i
+                    min_col[v] = j
+                    max_col[v] = j
                 else:
-                    if m != 2:
-                        for a in range(m):
-                            for b in range(n):
-                                if a <= i:
-                                    #running -= grid[a][b]
-                                    if running - grid[a][b] == remaining:
-                                        return True
-                                else:
-                                    #remaining -= grid[a][b]
-                                    if running == remaining - grid[a][b]:
-                                        return True
+                    min_row[v] = min(min_row[v], i)
+                    max_row[v] = max(max_row[v], i)
+                    min_col[v] = min(min_col[v], j)
+                    max_col[v] = max(max_col[v], j)
 
+        def can_remove_top(cut_row: int, diff: int) -> bool:
+            rows = cut_row + 1
+            cols = n
 
-        # vertical cut
-        if n > 1:
-            col_sums = [0] * n
-            for row in grid:
-                for j in range(n):
-                    col_sums[j] += row[j]
+            if rows == 1 and cols == 1:
+                return grid[0][0] == diff
+            if rows == 1:
+                return grid[0][0] == diff or grid[0][cols - 1] == diff
+            if cols == 1:
+                return grid[0][0] == diff or grid[cut_row][0] == diff
+            return diff in min_row and min_row[diff] <= cut_row
 
-            running = 0
-            for i in range(n-1):
-                running += col_sums[i]
-                if running == half and total % 2 == 0:
+        def can_remove_bottom(cut_row: int, diff: int) -> bool:
+            start = cut_row + 1
+            rows = m - start
+            cols = n
+
+            if rows == 1 and cols == 1:
+                return grid[start][0] == diff
+            if rows == 1:
+                return grid[start][0] == diff or grid[start][cols - 1] == diff
+            if cols == 1:
+                return grid[start][0] == diff or grid[m - 1][0] == diff
+            return diff in max_row and max_row[diff] >= start
+
+        def can_remove_left(cut_col: int, diff: int) -> bool:
+            rows = m
+            cols = cut_col + 1
+
+            if rows == 1 and cols == 1:
+                return grid[0][0] == diff
+            if rows == 1:
+                return grid[0][0] == diff or grid[0][cut_col] == diff
+            if cols == 1:
+                return grid[0][0] == diff or grid[rows - 1][0] == diff
+            return diff in min_col and min_col[diff] <= cut_col
+
+        def can_remove_right(cut_col: int, diff: int) -> bool:
+            start = cut_col + 1
+            rows = m
+            cols = n - start
+
+            if rows == 1 and cols == 1:
+                return grid[0][start] == diff
+            if rows == 1:
+                return grid[0][start] == diff or grid[0][n - 1] == diff
+            if cols == 1:
+                return grid[0][start] == diff or grid[m - 1][start] == diff
+            return diff in max_col and max_col[diff] >= start
+
+        # Try horizontal cuts
+        top_sum = 0
+        for i in range(m - 1):
+            top_sum += row_sums[i]
+            bottom_sum = total - top_sum
+
+            if top_sum == bottom_sum:
+                return True
+
+            if top_sum > bottom_sum:
+                if can_remove_top(i, top_sum - bottom_sum):
                     return True
-                remaining = total - running
-                if i == 0:
-                    if (running - grid[0][i]) == remaining or (running - grid[m-1][i]) == remaining:
-                        return True
-                elif i == (n - 2):
-                    if (remaining - grid[0][i+1]) == running or (remaining - grid[m-1][i+1]) == running:
-                        return True
-                else:
-                    if n != 2:
-                        for a in range(m):
-                            for b in range(n):
-                                if b <= i:
-                                    #running -= grid[a][b]
-                                    if running - grid[a][b] == remaining:
-                                        return True
-                                else:
-                                    #remaining -= grid[a][b]
-                                    if running == remaining - grid[a][b]:
-                                        return True
+            else:
+                if can_remove_bottom(i, bottom_sum - top_sum):
+                    return True
+
+        # Try vertical cuts
+        left_sum = 0
+        for j in range(n - 1):
+            left_sum += col_sums[j]
+            right_sum = total - left_sum
+
+            if left_sum == right_sum:
+                return True
+
+            if left_sum > right_sum:
+                if can_remove_left(j, left_sum - right_sum):
+                    return True
+            else:
+                if can_remove_right(j, right_sum - left_sum):
+                    return True
 
         return False
 
