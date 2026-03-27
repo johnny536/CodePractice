@@ -57,7 +57,73 @@ class Solution:
             - 2 <= m * n <= 10^5
             - 1 <= grid[i][j] <= 10^5
         """
-        pass
+        m, n = len(grid), len(grid[0])
+
+        total = sum(sum(row) for row in grid)
+
+        half = total // 2
+
+        # horizontal cut
+        running = 0
+        if m > 1:
+            for i in range(m-1):
+                running += sum(grid[i])
+                if running == half and total % 2 == 0:
+                    return True
+                remaining = total - running
+                if i == 0:
+                    if (running - grid[i][0]) == remaining or (running - grid[i][n-1]) == remaining:
+                        return True
+                elif i == (m - 2):
+                    if (remaining - grid[i+1][0]) == running or (remaining - grid[i+1][n-1]) == running:
+                        return True
+                else:
+                    if m != 2:
+                        for a in range(m):
+                            for b in range(n):
+                                if a <= i:
+                                    #running -= grid[a][b]
+                                    if running - grid[a][b] == remaining:
+                                        return True
+                                else:
+                                    #remaining -= grid[a][b]
+                                    if running == remaining - grid[a][b]:
+                                        return True
+
+
+        # vertical cut
+        if n > 1:
+            col_sums = [0] * n
+            for row in grid:
+                for j in range(n):
+                    col_sums[j] += row[j]
+
+            running = 0
+            for i in range(n-1):
+                running += col_sums[i]
+                if running == half and total % 2 == 0:
+                    return True
+                remaining = total - running
+                if i == 0:
+                    if (running - grid[0][i]) == remaining or (running - grid[m-1][i]) == remaining:
+                        return True
+                elif i == (n - 2):
+                    if (remaining - grid[0][i+1]) == running or (remaining - grid[m-1][i+1]) == running:
+                        return True
+                else:
+                    if n != 2:
+                        for a in range(m):
+                            for b in range(n):
+                                if b <= i:
+                                    #running -= grid[a][b]
+                                    if running - grid[a][b] == remaining:
+                                        return True
+                                else:
+                                    #remaining -= grid[a][b]
+                                    if running == remaining - grid[a][b]:
+                                        return True
+
+        return False
 
 
 if __name__ == "__main__":
