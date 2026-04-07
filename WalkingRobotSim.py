@@ -38,7 +38,7 @@ class Solution:
             60013  # Slightly larger than 2 * max coordinate value
         )
 
-    def robotSim(self, commands: List[int], obstacles: List[List[int]]) -> int:
+    def robotSim(self, commands: list[int], obstacles: list[list[int]]) -> int:
         # Store obstacles in a set for efficient lookup
         obstacle_set = {self._hash_coordinates(x, y) for x, y in obstacles}
 
@@ -118,7 +118,7 @@ if __name__ == "__main__":
         {
             "commands": [9, 9, 9, 9],
             "obstacles": [],
-            "expected": 324,
+            "expected": 1296,
             "desc": "Straight line north"
         },
     ]
