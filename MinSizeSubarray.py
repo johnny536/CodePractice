@@ -45,6 +45,20 @@ class Solution:
 if __name__ == "__main__":
     sol = Solution()
 
-    print(sol.minSubArrayLen(7, [2, 3, 1, 2, 4, 3]))      # Expected: 2
-    print(sol.minSubArrayLen(4, [1, 4, 4]))               # Expected: 1
-    print(sol.minSubArrayLen(11, [1, 1, 1, 1, 1, 1, 1, 1])) # Expected: 0
+    test_cases = [
+        (7, [2, 3, 1, 2, 4, 3], 2),
+        (4, [1, 4, 4], 1),
+        (11, [1, 1, 1, 1, 1, 1, 1, 1], 0)
+    ]
+
+    all_passed = True
+
+    for i, (target, nums, expected) in enumerate(test_cases, 1):
+        result = sol.minSubArrayLen(target, nums)
+
+        if result != expected:
+            all_passed = False
+            print(f"Test case {i} failed: Expected {expected}, Got {result}")
+
+    if all_passed:
+        print("All test cases passed!")
