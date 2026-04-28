@@ -1,7 +1,7 @@
 from typing import List
 
 """
-209. Minimum Size Subarray Sum
+Minimum Size Subarray Sum
 
 Given an array of positive integers nums and a positive integer target, return the minimal length
 of a subarray whose sum is greater than or equal to target. If there is no such subarray, return 0 instead.
@@ -22,7 +22,23 @@ Output: 0
 
 class Solution:
     def minSubArrayLen(self, target: int, nums: List[int]) -> int:
-        pass
+        minSub = float('inf')
+        currentSum = 0
+        currentC = 0
+        for i in range(len(nums)):
+            currentSum += nums[i]
+            currentC += 1
+            if currentSum >= target and currentC == 1:
+                return 1
+            while currentSum >= target:
+                if currentSum >= target and currentC < minSub:
+                    minSub = currentC
+                currentSum -= nums[i-currentC+1]
+                currentC -= 1
+                
+        if minSub == float('inf'):
+            return 0
+        return minSub
 
 
 # Test cases
