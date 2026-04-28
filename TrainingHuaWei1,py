@@ -1,0 +1,93 @@
+
+# If you need to import additional packages or classes, please import here.
+import math
+import sys
+
+def sigmoid(z: float) -> float:
+    if z >= 0:
+        ez = math.exp(-z)
+        return 1.0 / (1.0 + ez)
+    ez = math.exp(z)
+    return ez / (1.0 + ez)
+
+def func():
+    
+    # please define the python3 input here. For example: a,b = map(int, input().strip().split())
+    data = sys.stdin.read().strip().split()
+    if not data:
+        return   
+    #print(data)
+    it = iter(data)
+    #print("Hello")
+    N = int(next(it))
+    F = int(next(it))
+    Q = int(next(it))
+    K = int(next(it))
+            
+    lr_scaled = int(next(it))
+    lambda_scaled = int(next(it))
+    threshold_scaled = int(next(it))
+            
+    eta = lr_scaled / 1000.0
+    lam = lambda_scaled / 1000.0
+            
+    X = []
+    y = []
+    for _ in range(N):
+        row = [int(next(it)) for _ in range(F)]
+        label = int(next(it))
+        X.append(row)
+        y.append(label)
+    
+    X_test = []
+    for _ in range(Q):
+        row = [int(next(it)) for _ in range(F)]
+        X_test.append(row)
+            
+    w = [0.0] * F
+    b = 0.0
+    # please finish the function body here.
+    for _ in range(K):
+        grad_w = [0.0] * F
+        grad_b = 0.0
+            
+        for i in range(N):
+            z = b
+            for j in range(F):
+                z += w[j] * X[i][j]
+                
+            p = sigmoid(z)
+            diff = p - y[i]
+            
+            for j in range(F):
+                grad_w[j] += diff * X[i][j]
+            grad_b += diff
+            
+        inv_n = 1.0 / N
+        for j in range(F):
+            grad_w[j] = grad_w[j] * inv_n + lam * w[j]
+        grad_b *= inv_n
+            
+        for j in range(F):
+            w[j] -= eta * grad_w[j]
+        b -= eta * grad_b
+       
+    labels = []
+    probs_scaled = []
+    
+    for i in range(Q):
+        z = b
+        for j in range(F):
+            z += w[j] * X_test[i][j]
+            
+        p = sigmoid(z)
+        prob_scaled = int(math.floor(p * 1000.0 + 0.5))
+        probs_scaled.append(prob_scaled)
+        labels.append(1 if prob_scaled >= threshold_scaled else 0)
+    print(labels.count(1))
+    print(" ".join(map(str, labels)))
+    print(" ".join(map(str, probs_scaled)))
+    # please define the python3 output here. For example: print().
+
+if __name__ == "__main__":
+    func()
